@@ -15,11 +15,26 @@ function updateServiceCard(serviceName, data) {
     const cardElement = document.getElementById(serviceName);
     if (!cardElement || !data) return;
 
+    // Atualiza o status principal
     const statusSpan = cardElement.querySelector('.service-status span');
     if (statusSpan) {
         statusSpan.textContent = data.status || 'Indisponível';
     }
 
+    // Pega os elementos de detalhes
+    const detailsP = cardElement.querySelector('.details');
+    const previsaoP = cardElement.querySelector('.previsao');
+
+    // Mostra ou esconde os detalhes
+    if (data.detalhes || data.previsao) {
+        cardElement.classList.add('has-details');
+        if(detailsP) detailsP.textContent = data.detalhes;
+        if(previsaoP) previsaoP.textContent = data.previsao;
+    } else {
+        cardElement.classList.remove('has-details');
+    }
+
+    // Atualiza a cor do card
     cardElement.classList.remove('loading', 'ok', 'alerta', 'critico');
     if (data.classe) {
         cardElement.classList.add(data.classe);
@@ -30,12 +45,10 @@ function updateServiceCard(serviceName, data) {
 function updateAvisoCard(data) {
     const cardElement = document.getElementById('aviso');
     if (!cardElement || !data) return;
-
     const contentP = cardElement.querySelector('.aviso-content p');
     if(contentP) {
         contentP.textContent = data.detalhes || 'Sem avisos no momento.';
     }
-
     cardElement.classList.remove('loading', 'ok', 'alerta');
     if (data.classe) {
         cardElement.classList.add(data.classe);
@@ -47,23 +60,13 @@ function updateStatusGeral(services) {
     const cardElement = document.getElementById('status-geral');
     const textElement = cardElement.querySelector('p');
     if (!cardElement || !textElement) return;
-
     let hasCritico = false;
     let hasAlerta = false;
-
-    // Itera sobre os serviços para ver o pior status
     for (const key in services) {
-        if (services[key].classe === 'critico') {
-            hasCritico = true;
-            break; // Achou o pior caso, não precisa continuar
-        }
-        if (services[key].classe === 'alerta') {
-            hasAlerta = true;
-        }
+        if (services[key].classe === 'critico') { hasCritico = true; break; }
+        if (services[key].classe === 'alerta') { hasAlerta = true; }
     }
-
     cardElement.classList.remove('loading', 'ok', 'alerta', 'critico');
-
     if (hasCritico) {
         cardElement.classList.add('critico');
         textElement.textContent = 'Um ou mais serviços apresentam problemas críticos.';
@@ -76,22 +79,16 @@ function updateStatusGeral(services) {
     }
 }
 
-
 function fetchData() {
     fetch(SCRIPT_URL)
         .then(response => response.json())
         .then(data => {
             if (data && data.servicos) {
-                // Atualiza cada card individual
                 updateServiceCard('agua', data.servicos.agua);
                 updateServiceCard('energia', data.servicos.energia);
                 updateServiceCard('lixo', data.servicos.lixo);
                 updateAvisoCard(data.servicos.aviso);
-
-                // Atualiza o status geral com base nos dados
                 updateStatusGeral(data.servicos);
-
-                // Atualiza a hora da última modificação
                 const lastUpdateElement = document.getElementById('last-update');
                 lastUpdateElement.textContent = formatTimestamp(data.servicos.agua.ultimaAtualizacao);
             }
