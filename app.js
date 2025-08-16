@@ -5,73 +5,104 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfUfp7OOdbZ7NnxRpxo
 // =================================================================
 
 function formatTimestamp(timestamp) {
-    if (!timestamp) return 'Carregando...';
+    if (!timestamp) return 'Conectando...';
     const date = new Date(Number(timestamp));
-    return date.toLocaleDateString('pt-BR') + ' às ' + date.toLocaleTimeString('pt-BR');
+    return "Última atualização: " + date.toLocaleDateString('pt-BR') + ' às ' + date.toLocaleTimeString('pt-BR');
 }
 
-// VERSÃO CORRIGIDA DA FUNÇÃO
+// Função para atualizar um card de serviço na grade
 function updateServiceCard(serviceName, data) {
     const cardElement = document.getElementById(serviceName);
-    if (!cardElement || !data) return; // Se não achar o card ou não tiver dados, para aqui.
+    if (!cardElement || !data) return;
 
-    const statusTextElement = cardElement.querySelector('.status-text');
-    const detailsElement = cardElement.querySelector('.details');
-    const previsaoElement = cardElement.querySelector('.previsao');
+    const statusSpan = cardElement.querySelector('.service-status span');
+    if (statusSpan) {
+        statusSpan.textContent = data.status || 'Indisponível';
+    }
 
-    cardElement.classList.remove('loading');
-    cardElement.className = 'card'; // Limpa classes de cor antigas
+    cardElement.classList.remove('loading', 'ok', 'alerta', 'critico');
     if (data.classe) {
         cardElement.classList.add(data.classe);
     }
+}
 
-    // VERIFICA SE O ELEMENTO EXISTE ANTES DE ATUALIZAR
-    if (statusTextElement) {
-        statusTextElement.textContent = data.status || 'Não informado';
+// Função para atualizar o card de aviso
+function updateAvisoCard(data) {
+    const cardElement = document.getElementById('aviso');
+    if (!cardElement || !data) return;
+
+    const contentP = cardElement.querySelector('.aviso-content p');
+    if(contentP) {
+        contentP.textContent = data.detalhes || 'Sem avisos no momento.';
     }
 
-    // VERIFICA SE O ELEMENTO EXISTE ANTES DE ATUALIZAR
-    if (detailsElement) {
-        detailsElement.textContent = data.detalhes || '';
-    }
-
-    // VERIFICA SE O ELEMENTO EXISTE ANTES DE ATUALIZAR
-    if (previsaoElement) {
-        previsaoElement.textContent = data.previsao || '';
+    cardElement.classList.remove('loading', 'ok', 'alerta');
+    if (data.classe) {
+        cardElement.classList.add(data.classe);
     }
 }
 
-// Busca os dados da nossa API na planilha
+// Função para atualizar o status geral
+function updateStatusGeral(services) {
+    const cardElement = document.getElementById('status-geral');
+    const textElement = cardElement.querySelector('p');
+    if (!cardElement || !textElement) return;
+
+    let hasCritico = false;
+    let hasAlerta = false;
+
+    // Itera sobre os serviços para ver o pior status
+    for (const key in services) {
+        if (services[key].classe === 'critico') {
+            hasCritico = true;
+            break; // Achou o pior caso, não precisa continuar
+        }
+        if (services[key].classe === 'alerta') {
+            hasAlerta = true;
+        }
+    }
+
+    cardElement.classList.remove('loading', 'ok', 'alerta', 'critico');
+
+    if (hasCritico) {
+        cardElement.classList.add('critico');
+        textElement.textContent = 'Um ou mais serviços apresentam problemas críticos.';
+    } else if (hasAlerta) {
+        cardElement.classList.add('alerta');
+        textElement.textContent = 'Um ou mais serviços estão em alerta.';
+    } else {
+        cardElement.classList.add('ok');
+        textElement.textContent = 'Todos os serviços estão operando normalmente.';
+    }
+}
+
+
 function fetchData() {
-    const errorDisplay = document.querySelector('header p'); // Seleciona o parágrafo do cabeçalho
     fetch(SCRIPT_URL)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Falha na rede ou na API');
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             if (data && data.servicos) {
-                errorDisplay.textContent = "Status dos serviços da nossa comunidade"; // Restaura a mensagem original
+                // Atualiza cada card individual
                 updateServiceCard('agua', data.servicos.agua);
                 updateServiceCard('energia', data.servicos.energia);
                 updateServiceCard('lixo', data.servicos.lixo);
-                updateServiceCard('aviso', data.servicos.aviso);
+                updateAvisoCard(data.servicos.aviso);
 
+                // Atualiza o status geral com base nos dados
+                updateStatusGeral(data.servicos);
+
+                // Atualiza a hora da última modificação
                 const lastUpdateElement = document.getElementById('last-update');
-                // A data/hora agora fica na planilha, na linha da água
-                lastUpdateElement.textContent = "Última atualização: " + formatTimestamp(data.servicos.agua.ultimaAtualizacao); 
-            } else {
-                throw new Error('Os dados recebidos não estão no formato esperado.');
+                lastUpdateElement.textContent = formatTimestamp(data.servicos.agua.ultimaAtualizacao);
             }
         })
         .catch(error => {
             console.error("Erro ao buscar dados:", error);
-            errorDisplay.textContent = "Erro ao carregar dados. Tente recarregar a página."; // Mostra o erro
+            const statusGeral = document.getElementById('status-geral');
+            statusGeral.className = 'status-geral-card critico';
+            statusGeral.querySelector('p').textContent = 'Não foi possível carregar os dados. Verifique a conexão.';
         });
 }
 
-// Carrega os dados quando a página abre e atualiza a cada 1 minuto
 document.addEventListener('DOMContentLoaded', fetchData);
-setInterval(fetchData, 60000); // Atualiza a cada 60 segundos
+setInterval(fetchData, 60000);

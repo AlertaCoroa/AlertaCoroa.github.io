@@ -4,60 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alerta Coroa - Status dos Serviços</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
+    <header class="main-header">
+        <div class="container">
             <h1>Alerta Coroa</h1>
             <p>Painel de Status dos Serviços da Comunidade</p>
-            <div id="last-update">Conectando...</div>
-        </header>
+        </div>
+    </header>
 
+    <div class="container main-content">
         <main>
             <div id="status-geral" class="status-geral-card loading">
                 <p>Verificando status de todos os serviços...</p>
             </div>
+            <div id="last-update">Conectando...</div>
 
             <div class="services-grid">
                 <div id="agua" class="service-card loading">
-                    <span class="service-icon">💧</span>
-                    <h3>Água</h3>
-                    <div class="service-status">
-                        <span>Carregando...</span>
+                    <div class="card-content">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                        </div>
+                        <h3>Água</h3>
                     </div>
+                    <div class="service-status"><span>Carregando...</span></div>
                 </div>
 
                 <div id="energia" class="service-card loading">
-                    <span class="service-icon">⚡</span>
-                    <h3>Energia</h3>
-                    <div class="service-status">
-                        <span>Carregando...</span>
+                    <div class="card-content">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        </div>
+                        <h3>Energia</h3>
                     </div>
+                    <div class="service-status"><span>Carregando...</span></div>
                 </div>
 
                 <div id="lixo" class="service-card loading">
-                    <span class="service-icon">🗑️</span>
-                    <h3>Coleta de Lixo</h3>
-                    <div class="service-status">
-                        <span>Carregando...</span>
+                    <div class="card-content">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </div>
+                        <h3>Coleta de Lixo</h3>
                     </div>
+                    <div class="service-status"><span>Carregando...</span></div>
                 </div>
             </div>
 
             <div id="aviso" class="aviso-card loading">
                  <div class="aviso-header">
-                    <span class="service-icon">📢</span>
+                    <div class="service-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 13V11z"></path><path d="M11.6 16.8a3 3 0 1 1-5.2-3.6"></path></svg>
+                    </div>
                     <h3>Aviso Geral</h3>
                 </div>
-                <div class="aviso-content">
-                    <p>Carregando...</p>
-                </div>
+                <div class="aviso-content"><p>Carregando...</p></div>
             </div>
         </main>
     </div>
@@ -65,7 +71,6 @@
     <footer>
         <p>Um projeto da comunidade para a comunidade.</p>
     </footer>
-
     <script src="app.js"></script>
 </body>
 </html>
