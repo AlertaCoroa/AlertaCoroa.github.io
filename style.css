@@ -1,0 +1,105 @@
+:root {
+    --cor-fundo: #f0f2f5;
+    --cor-card: #ffffff;
+    --cor-texto: #333;
+    --cor-sombra: rgba(0, 0, 0, 0.1);
+    --status-ok: #2ecc71;
+    --status-alerta: #f39c12;
+    --status-critico: #e74c3c;
+    --status-loading: #bdc3c7;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    margin: 0;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    padding: 20px 0;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+header p {
+    margin: 5px 0 0;
+    font-size: 1.1em;
+    color: #555;
+}
+
+#last-update {
+    font-size: 0.8em;
+    color: #777;
+    margin-top: 10px;
+}
+
+main {
+    width: 100%;
+    max-width: 600px;
+}
+
+.card {
+    background-color: var(--cor-card);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px var(--cor-sombra);
+    border-left: 8px solid;
+    transition: all 0.3s ease;
+}
+
+.card.loading { border-left-color: var(--status-loading); }
+.card.ok { border-left-color: var(--status-ok); }
+.card.alerta { border-left-color: var(--status-alerta); }
+.card.critico { border-left-color: var(--status-critico); }
+
+.card h2 {
+    margin: 0 0 15px;
+    font-size: 1.8em;
+}
+
+.status-text {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.ok .status-text { color: var(--status-ok); }
+.alerta .status-text { color: var(--status-alerta); }
+.critico .status-text { color: var(--status-critico); }
+
+.info-box {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+.info-box p {
+    margin: 0 0 8px;
+}
+.info-box p:last-child {
+    margin-bottom: 0;
+}
+
+.previsao {
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-size: 0.9em;
+}

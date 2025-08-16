@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Alerta Coroa</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos adicionais para a página de admin */
+        body { background-color: #333; color: #fff; }
+        .card { background-color: #444; border-left-color: #555; }
+        header h1, header p { color: #fff; }
+        h2, .status-text, label { color: #eee; }
+        input, select, textarea { 
+            width: 100%; 
+            padding: 10px; 
+            margin-bottom: 10px; 
+            border-radius: 4px; 
+            border: 1px solid #666;
+            background-color: #555;
+            color: #fff;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #2ecc71;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        #login-section, #admin-panel {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 500px;
+            background-color: #3a3a3a;
+            border-radius: 8px;
+        }
+        #admin-panel { display: none; } /* Começa escondido */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Painel de Controle</h1>
+        <p>Alerta Coroa</p>
+    </header>
+
+    <section id="login-section">
+        <h2>Acesso Restrito</h2>
+        <form id="login-form">
+            <label for="password">Senha:</label>
+            <input type="password" id="password" required>
+            <button type="submit">Entrar</button>
+            <p id="login-error" style="color: #e74c3c; display: none;">Senha incorreta!</p>
+        </form>
+    </section>
+
+    <main id="admin-panel">
+        <form id="update-form">
+            <div class="card">
+                <h2>💧 Água</h2>
+                <label for="agua-status">Status:</label>
+                <input type="text" id="agua-status" placeholder="Ex: Normal, Manutenção, Interrompido" required>
+
+                <label for="agua-classe">Cor do Alerta:</label>
+                <select id="agua-classe">
+                    <option value="ok">Verde (Normal)</option>
+                    <option value="alerta">Amarelo (Alerta)</option>
+                    <option value="critico">Vermelho (Crítico)</option>
+                </select>
+
+                <label for="agua-detalhes">Detalhes:</label>
+                <textarea id="agua-detalhes" rows="2" placeholder="Ex: Manutenção na bomba principal."></textarea>
+
+                <label for="agua-previsao">Previsão de Retorno:</label>
+                <input type="text" id="agua-previsao" placeholder="Ex: Previsão para as 18h.">
+            </div>
+
+            <div class="card">
+                <h2>⚡ Energia</h2>
+                <label for="energia-status">Status:</label>
+                <input type="text" id="energia-status" placeholder="Ex: Normal, Instável, Apagão" required>
+
+                 <label for="energia-classe">Cor do Alerta:</label>
+                <select id="energia-classe">
+                    <option value="ok">Verde (Normal)</option>
+                    <option value="alerta">Amarelo (Alerta)</option>
+                    <option value="critico">Vermelho (Crítico)</option>
+                </select>
+
+                <label for="energia-detalhes">Detalhes:</label>
+                <textarea id="energia-detalhes" rows="2" placeholder="Ex: Queda de fase na Rua X."></textarea>
+
+                <label for="energia-previsao">Previsão de Retorno:</label>
+                <input type="text" id="energia-previsao" placeholder="Ex: Equipe a caminho.">
+            </div>
+
+            <div class="card">
+                <h2>🗑️ Coleta de Lixo</h2>
+                <label for="lixo-status">Status:</label>
+                <input type="text" id="lixo-status" placeholder="Ex: Coleta Normal, Atrasada, Suspensa" required>
+
+                <label for="lixo-classe">Cor do Alerta:</label>
+                <select id="lixo-classe">
+                    <option value="ok">Verde (Normal)</option>
+                    <option value="alerta">Amarelo (Alerta)</option>
+                    <option value="critico">Vermelho (Crítico)</option>
+                </select>
+
+                <label for="lixo-detalhes">Detalhes:</label>
+                <textarea id="lixo-detalhes" rows="2" placeholder="Ex: Caminhão não subiu hoje."></textarea>
+
+                <label for="lixo-previsao">Próxima Coleta:</label>
+                <input type="text" id="lixo-previsao" placeholder="Ex: Tentativa amanhã de manhã.">
+            </div>
+
+             <div class="card">
+                <h2>📢 Aviso Geral</h2>
+                <label for="aviso-status">Título do Aviso (não aparecerá no painel):</label>
+                <input type="text" id="aviso-status" value="Aviso" required>
+
+                 <label for="aviso-classe">Cor do Alerta:</label>
+                <select id="aviso-classe">
+                    <option value="ok">Verde (Informativo)</option>
+                    <option value="alerta">Amarelo (Atenção)</option>
+                </select>
+
+                <label for="aviso-detalhes">Texto do Aviso:</label>
+                <textarea id="aviso-detalhes" rows="3" placeholder="Ex: Campanha de vacinação no posto de saúde amanhã."></textarea>
+            </div>
+
+            <button type="submit">ATUALIZAR PAINEL</button>
+        </form>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script src="admin.js"></script>
+</body>
+</html>

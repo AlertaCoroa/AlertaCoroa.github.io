@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerta Coroa - Status dos Serviços</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Alerta Coroa</h1>
+        <p>Status dos serviços da nossa comunidade</p>
+        <div id="last-update">Atualizando...</div>
+    </header>
+
+    <main>
+        <section id="agua" class="card loading">
+            <h2>💧 Água</h2>
+            <div class="status-text">Carregando...</div>
+            <div class="info-box">
+                <p class="details">Carregando...</p>
+                <p class="previsao">Carregando...</p>
+            </div>
+        </section>
+
+        <section id="energia" class="card loading">
+            <h2>⚡ Energia</h2>
+            <div class="status-text">Carregando...</div>
+            <div class="info-box">
+                <p class="details">Carregando...</p>
+                <p class="previsao">Carregando...</p>
+            </div>
+        </section>
+
+        <section id="lixo" class="card loading">
+            <h2>🗑️ Coleta de Lixo</h2>
+            <div class="status-text">Carregando...</div>
+            <div class="info-box">
+                <p class="details">Carregando...</p>
+                <p class="previsao">Carregando...</p>
+            </div>
+        </section>
+
+        <section id="aviso" class="card loading">
+            <h2>📢 Aviso Geral</h2>
+             <div class="info-box">
+                <p class="details">Carregando...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Um projeto da comunidade para a comunidade.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script src="app.js"></script>
+</body>
+</html>
