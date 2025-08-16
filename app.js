@@ -10,22 +10,32 @@ function formatTimestamp(timestamp) {
     return date.toLocaleDateString('pt-BR') + ' às ' + date.toLocaleTimeString('pt-BR');
 }
 
+// VERSÃO CORRIGIDA DA FUNÇÃO
 function updateServiceCard(serviceName, data) {
     const cardElement = document.getElementById(serviceName);
-    if (!cardElement || !data) return;
+    if (!cardElement || !data) return; // Se não achar o card ou não tiver dados, para aqui.
 
     const statusTextElement = cardElement.querySelector('.status-text');
     const detailsElement = cardElement.querySelector('.details');
     const previsaoElement = cardElement.querySelector('.previsao');
 
     cardElement.classList.remove('loading');
-    statusTextElement.textContent = data.status || 'Não informado';
-    cardElement.className = 'card'; // Limpa classes antigas
+    cardElement.className = 'card'; // Limpa classes de cor antigas
     if (data.classe) {
         cardElement.classList.add(data.classe);
     }
 
-    detailsElement.textContent = data.detalhes || '';
+    // VERIFICA SE O ELEMENTO EXISTE ANTES DE ATUALIZAR
+    if (statusTextElement) {
+        statusTextElement.textContent = data.status || 'Não informado';
+    }
+
+    // VERIFICA SE O ELEMENTO EXISTE ANTES DE ATUALIZAR
+    if (detailsElement) {
+        detailsElement.textContent = data.detalhes || '';
+    }
+
+    // VERIFICA SE O ELEMENTO EXISTE ANTES DE ATUALIZAR
     if (previsaoElement) {
         previsaoElement.textContent = data.previsao || '';
     }
@@ -33,23 +43,32 @@ function updateServiceCard(serviceName, data) {
 
 // Busca os dados da nossa API na planilha
 function fetchData() {
+    const errorDisplay = document.querySelector('header p'); // Seleciona o parágrafo do cabeçalho
     fetch(SCRIPT_URL)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Falha na rede ou na API');
+            }
+            return response.json();
+        })
         .then(data => {
             if (data && data.servicos) {
+                errorDisplay.textContent = "Status dos serviços da nossa comunidade"; // Restaura a mensagem original
                 updateServiceCard('agua', data.servicos.agua);
                 updateServiceCard('energia', data.servicos.energia);
                 updateServiceCard('lixo', data.servicos.lixo);
                 updateServiceCard('aviso', data.servicos.aviso);
 
                 const lastUpdateElement = document.getElementById('last-update');
-                lastUpdateElement.textContent = "Última atualização: " + formatTimestamp(data.servicos.agua.ultimaAtualizacao); // A data fica em um dos serviços
+                // A data/hora agora fica na planilha, na linha da água
+                lastUpdateElement.textContent = "Última atualização: " + formatTimestamp(data.servicos.agua.ultimaAtualizacao); 
+            } else {
+                throw new Error('Os dados recebidos não estão no formato esperado.');
             }
         })
         .catch(error => {
             console.error("Erro ao buscar dados:", error);
-            const lastUpdateElement = document.getElementById('last-update');
-            lastUpdateElement.textContent = "Erro ao carregar dados. Tente recarregar a página.";
+            errorDisplay.textContent = "Erro ao carregar dados. Tente recarregar a página."; // Mostra o erro
         });
 }
 
