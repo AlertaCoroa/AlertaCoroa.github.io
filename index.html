@@ -4,57 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alerta Coroa - Status dos Serviços</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Alerta Coroa</h1>
-        <p>Status dos serviços da nossa comunidade</p>
-        <div id="last-update">Atualizando...</div>
-    </header>
+    <div class="container">
+        <header>
+            <h1>Alerta Coroa</h1>
+            <p>Painel de Status dos Serviços da Comunidade</p>
+            <div id="last-update">Conectando...</div>
+        </header>
 
-    <main>
-        <section id="agua" class="card loading">
-            <h2>💧 Água</h2>
-            <div class="status-text">Carregando...</div>
-            <div class="info-box">
-                <p class="details">Carregando...</p>
-                <p class="previsao">Carregando...</p>
+        <main>
+            <div id="status-geral" class="status-geral-card loading">
+                <p>Verificando status de todos os serviços...</p>
             </div>
-        </section>
 
-        <section id="energia" class="card loading">
-            <h2>⚡ Energia</h2>
-            <div class="status-text">Carregando...</div>
-            <div class="info-box">
-                <p class="details">Carregando...</p>
-                <p class="previsao">Carregando...</p>
-            </div>
-        </section>
+            <div class="services-grid">
+                <div id="agua" class="service-card loading">
+                    <span class="service-icon">💧</span>
+                    <h3>Água</h3>
+                    <div class="service-status">
+                        <span>Carregando...</span>
+                    </div>
+                </div>
 
-        <section id="lixo" class="card loading">
-            <h2>🗑️ Coleta de Lixo</h2>
-            <div class="status-text">Carregando...</div>
-            <div class="info-box">
-                <p class="details">Carregando...</p>
-                <p class="previsao">Carregando...</p>
-            </div>
-        </section>
+                <div id="energia" class="service-card loading">
+                    <span class="service-icon">⚡</span>
+                    <h3>Energia</h3>
+                    <div class="service-status">
+                        <span>Carregando...</span>
+                    </div>
+                </div>
 
-        <section id="aviso" class="card loading">
-            <h2>📢 Aviso Geral</h2>
-             <div class="info-box">
-                <p class="details">Carregando...</p>
+                <div id="lixo" class="service-card loading">
+                    <span class="service-icon">🗑️</span>
+                    <h3>Coleta de Lixo</h3>
+                    <div class="service-status">
+                        <span>Carregando...</span>
+                    </div>
+                </div>
             </div>
-        </section>
-    </main>
+
+            <div id="aviso" class="aviso-card loading">
+                 <div class="aviso-header">
+                    <span class="service-icon">📢</span>
+                    <h3>Aviso Geral</h3>
+                </div>
+                <div class="aviso-content">
+                    <p>Carregando...</p>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <footer>
         <p>Um projeto da comunidade para a comunidade.</p>
     </footer>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script src="app.js"></script>
 </body>
